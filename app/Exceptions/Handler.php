@@ -48,8 +48,12 @@ class Handler extends ExceptionHandler
      *
      * @throws \Throwable
      */
-    public function render($request, Throwable $exception)
-    {
-        return parent::render($request, $exception);
-    }
+	
+	public function render($request, Throwable $exception)
+	{
+		if($exception instanceof \Illuminate\Auth\AuthenticationException ){
+			return response()->json(['message' => 'Invalid Token'], 401);
+		}
+		return parent::render($request, $exception);
+	}
 }
