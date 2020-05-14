@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\User;
+use Laravel\Passport\Client as OClient; 
 
 class AuthController extends Controller
 {
@@ -46,7 +47,7 @@ class AuthController extends Controller
         $token = $tokenResult->token;
         if($request->remember_me)
 		{
-			$token->expires_at = Carbon::now()->addWeeks(1);
+			$token->expires_at = Carbon::now()->addDays(1);
 		}
         $token->save();
         return response()->json([
@@ -55,6 +56,11 @@ class AuthController extends Controller
             'expires_at' => Carbon::parse($tokenResult->token->expires_at)->toDateTimeString()
         ]);
     }
+	
+	public function refreshToken(Request $request)
+	{
+		
+	}
   
     public function logout(Request $request)
     {
